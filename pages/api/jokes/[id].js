@@ -1,13 +1,22 @@
-import { jokes } from "../../../lib/data.js";
+// import { jokes } from "../../../lib/data.js";
+import dbConnect from "@/db/connect";
+import Joke from "@/db/models/Joke";
 
-export default function handler(request, response) {
+export default async function handler(request, response) {
+  await dbConnect();
   const { id } = request.query;
 
-  const joke = jokes.find((joke) => joke.id === id);
+  if (request.method === "GET") {
+    const joke = await Joke.findById(id);
 
-  if (!joke) {
-    return response.status(404).json({ status: "Not Found" });
+    if (!joke) {
+      response.status(404).json({ status: "Joke not found." });
+      return;
+    }
+
+    response.status(200).json(joke);
+    return;
   }
 
-  response.status(200).json(joke);
+  request.status(405).json({ status: "Request method not implemented." });
 }
