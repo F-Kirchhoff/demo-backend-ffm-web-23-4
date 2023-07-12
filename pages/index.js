@@ -1,10 +1,12 @@
+import JokeForm from "@/components/JokeForm";
 import JokeList from "../components/JokeList";
+
 import useSWR from "swr";
 
 export default function HomePage() {
   const { mutate } = useSWR("/api/jokes");
 
-  async function handleCreateTestJoke(event) {
+  async function handleCreateJoke(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -30,11 +32,11 @@ export default function HomePage() {
 
   return (
     <>
-      <form action="" onSubmit={handleCreateTestJoke}>
-        <label htmlFor="joke">Create a new joke</label>
-        <input id="joke" name="joke" type="text" />
-        <button type="submit">submit</button>
-      </form>
+      <JokeForm
+        onSubmit={handleCreateJoke}
+        isEditMode={false}
+        defaultValue={""}
+      />
       <JokeList />
     </>
   );
