@@ -12,5 +12,16 @@ export default async function handler(request, response) {
     return;
   }
 
-  request.status(405).json({ status: "Request method not implemented." });
+  if (request.method === "POST") {
+    const newJoke = request.body;
+
+    console.log(newJoke);
+
+    await Joke.create(newJoke);
+
+    response.status(200).json({ status: "Joke created." });
+    return;
+  }
+
+  response.status(405).json({ status: "Request method not implemented." });
 }

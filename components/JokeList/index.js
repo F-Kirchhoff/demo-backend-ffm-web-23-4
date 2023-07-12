@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function JokeList() {
   const { data, isLoading } = useSWR("/api/jokes");
-  console.log({ data });
+
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
